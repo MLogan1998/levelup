@@ -1,0 +1,26 @@
+[
+  {
+    "model": "levelupapi.game",
+    "pk": 1,
+    "fields": {
+        "title" : "Clue",
+        "game_type": 1,
+        "maker": "Hasbro",
+        "number_of_players": 5,
+        "gamer": 1,
+        "skill_level": 1
+    }
+  },
+  {
+    "model": "levelupapi.game",
+    "pk": 2,
+    "fields": {
+        "title" : "Best Game of All Time",
+        "game_type": 2,
+        "maker": "Hasbro",
+        "number_of_players": 5,
+        "gamer": 1,
+        "skill_level": 5
+    }
+  }
+]
