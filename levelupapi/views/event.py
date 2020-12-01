@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
-from levelupapi.models import Game, Event, Gamer
+from levelupapi.models import Game, Event, Gamer, GamerEvent
 from levelupapi.views.game import GameSerializer
 
 class Events(ViewSet):
@@ -74,6 +74,48 @@ class Events(ViewSet):
         serializer = EventSerializer(
             events, many=True, context={'request': request})
         return Response(serializer.data)
+
+    @action(methods=['get', 'post', 'delete'], detail=True)
+    def signup(self, request, pk=None):
+        if request.method == "POST":
+            event = Event.objects.get(pk=pk)
+            gamer = Gamer.objects.get(user=request.auth.user)
+
+            try:
+                registration = GamerEvent.objects.get(
+                    event=event, gamer=gamer)
+                return Response(
+                    {'message': 'Gamer already signed up for this event.'},
+                    status=status.HTTP_422_UNPROCESSABLE_ENTITY
+                )
+            except GamerEvent.DoesNotExist:
+                registration = GamerEvent()
+                registration.event = event
+                registration.gamer = gamer
+                registration.save()
+                return Response({}, status=status.HTTP_201_CREATED)
+
+        elif request.method == "DELETE":
+            try:
+                event = Event.objects.get(pk=pk)
+            except Event.DoesNotExist:
+                return Response(
+                    {'message': 'Event does not exist.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            gamer = Gamer.objects.get(user=request.auth.user)
+            try: 
+                registration = GamerEvent.objects.get(
+                    event=event, gamer=gamer)
+                registration.delete()
+                return Response(None, status=status.HTTP_204_NO_CONTENT)
+            except GamerEvent.DoesNotExist:
+                return Response(
+                    {'message': 'Not currently registered for event.'},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+        return Response({}, status=HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class EventUserSerializer(serializers.ModelSerializer):
