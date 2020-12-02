@@ -4,3 +4,4 @@ from .gametype import GameTypes
 from .gametype import GameTypeSerializer
 from .game import Games
 from .event import Events
+from .profile import Profile
