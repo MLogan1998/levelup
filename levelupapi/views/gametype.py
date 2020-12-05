@@ -22,11 +22,7 @@ class GameTypes(ViewSet):
         return Response(serializer.data)
 
 
-class GameTypeSerializer(serializers.HyperlinkedModelSerializer):
+class GameTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameType
-        url = serializers.HyperlinkedIdentityField(
-          view_name='gametype',
-          lookup_field='id'
-        )
-        fields = ('id', 'url', 'label')
+        fields = ('id', 'label')

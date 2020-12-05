@@ -76,7 +76,7 @@ class Games(ViewSet):
         return Response(serializer.data)
 
 
-class GameSerializer(serializers.HyperlinkedModelSerializer):
+class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
