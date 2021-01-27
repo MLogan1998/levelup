@@ -37,7 +37,7 @@ def register_user(request):
         last_name=req_body['last_name']
     )
 
-    gmaer = Gamer.objects.create(
+    gamer = Gamer.objects.create(
         bio=req_body['bio'],
         user=new_user
     )
